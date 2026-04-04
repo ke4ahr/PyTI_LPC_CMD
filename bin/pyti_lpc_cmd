@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+# pyti_lpc_cmd -- command-line entry point for pyti_lpc_cmd
+# Copyright (C) 2026 Kris Kirby, KE4AHR
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import sys
+import os
+
+# Ensure the package directory is importable when run directly from bin/
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from pyti_lpc_cmd.__main__ import main
+
+sys.exit(main())

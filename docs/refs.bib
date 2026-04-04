@@ -1,0 +1,75 @@
+% refs.bib — bibliography for pyti_lpc_cmd_paper_lua.tex
+% Copyright (C) 2026 Kris Kirby, KE4AHR — Licensed GPLv3.0
+
+@article{Wiggins1978,
+  author   = {Wiggins, Richard H. and Brantingham, Larry G.},
+  title    = {Three-Chip System Synthesizes Human Speech},
+  journal  = {Electronics},
+  year     = {1978},
+  volume   = {51},
+  number   = {20},
+  pages    = {109--116},
+  note     = {Describes the TMS5100 LPC speech synthesis system as used in the
+              original \textit{Speak \& Spell}.},
+}
+
+@manual{TMS5220_1983,
+  author   = {{Texas Instruments Incorporated}},
+  title    = {{TMS5220} Voice Synthesis Processor Data Sheet},
+  year     = {1983},
+  note     = {Literature Number SPHS015.  Covers the TMS5220 and TMS5220C VSP
+              devices including bitstream format, coefficient tables, and
+              synthesis algorithm.},
+}
+
+@manual{TMS5100_1981,
+  author   = {{Texas Instruments Incorporated}},
+  title    = {{TMS5100/TMS5200} Speech Synthesis Products},
+  year     = {1981},
+  note     = {Data sheet and application notes for the TMS5100, TMS5110,
+              TMS5200, and TMS5220 LPC speech synthesis family.},
+}
+
+@article{Atal1971,
+  author   = {Atal, Bishnu S. and Hanauer, Suzanne L.},
+  title    = {Speech Analysis and Synthesis by Linear Prediction of the
+              Speech Wave},
+  journal  = {Journal of the Acoustical Society of America},
+  year     = {1971},
+  volume   = {50},
+  number   = {2B},
+  pages    = {637--655},
+  doi      = {10.1121/1.1912679},
+}
+
+@book{Rabiner1978,
+  author    = {Rabiner, Lawrence R. and Schafer, Ronald W.},
+  title     = {Digital Processing of Speech Signals},
+  publisher = {Prentice-Hall},
+  address   = {Englewood Cliffs, NJ},
+  year      = {1978},
+  isbn      = {0-13-213603-1},
+}
+
+@misc{MAME,
+  author       = {{MAME Team}},
+  title        = {{MAME}: Multiple Arcade Machine Emulator},
+  howpublished = {\url{https://www.mamedev.org}},
+  year         = {1997},
+  note         = {Open-source multi-system emulator, BSD-3-Clause License.
+                  The \texttt{tms5220.cpp} source file provided a functional
+                  reference for the LPC synthesis algorithm (read for
+                  behaviour, not code); the clean-room specification was
+                  derived independently.},
+}
+
+@techreport{Nicholson_QDSS,
+  author      = {Nicholson, R. H., Jr.},
+  title       = {Bandlimited Interpolation---Introduction and Algorithm},
+  institution = {Usenet \texttt{comp.dsp}},
+  year        = {1995},
+  note        = {Describes the QDSS (quadrature-mirror downsampling/sinc)
+                 windowed-sinc resampling algorithm attributed to
+                 R.\,H.\,Nicholson~Jr., widely circulated in the digital
+                 signal processing community.},
+}

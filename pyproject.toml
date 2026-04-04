@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "pyti_lpc_cmd"
+version = "1.0.0"
+description = "Clean-room Python decoder for Texas Instruments TMS5xxx LPC speech synthesis chips"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+    { name = "Kris Kirby, KE4AHR" },
+]
+keywords = [
+    "TMS5220", "TMS5100", "LPC", "speech synthesis",
+    "Speak and Spell", "Texas Instruments", "retrocomputing",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Scientific/Engineering :: Human Machine Interfaces",
+]
+requires-python = ">=3.10"
+# No external runtime dependencies -- standard library only
+
+[project.urls]
+Homepage = "https://github.com/ke4ahr/PyTI_LPC_CMD"
+Repository = "https://github.com/ke4ahr/PyTI_LPC_CMD"
+
+[project.scripts]
+pyti_lpc_cmd = "pyti_lpc_cmd.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pyti_lpc_cmd*"]

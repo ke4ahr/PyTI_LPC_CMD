@@ -1,0 +1,48 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {section}{\numberline {2}System Architecture}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Module Structure}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}High-Level Data Flow}{3}{subsection.2.2}%
+\contentsline {section}{\numberline {3}LPC Bitstream Format}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Bit Reversal}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Sliding-Window Bit Extraction}{4}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Frame Structure}{4}{subsection.3.3}%
+\contentsline {section}{\numberline {4}LPC Synthesis Engine}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Frame Timing and Interpolation}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Excitation Generation}{5}{subsection.4.2}%
+\contentsline {paragraph}{Voiced excitation (period\nobreakspace {}$> 0$).}{5}{subsection.4.2}%
+\contentsline {paragraph}{Unvoiced excitation (period\nobreakspace {}$= 0$).}{5}{equation.4.3}%
+\contentsline {subsection}{\numberline {4.3}10th-Order Lattice Filter}{6}{subsection.4.3}%
+\contentsline {paragraph}{Forward path.}{6}{figure.caption.7}%
+\contentsline {paragraph}{Reverse path.}{6}{equation.4.5}%
+\contentsline {section}{\numberline {5}Sample Rate Conversion}{7}{section.5}%
+\contentsline {section}{\numberline {6}Audio Output}{7}{section.6}%
+\contentsline {paragraph}{PCM encoding.}{7}{section.6}%
+\contentsline {paragraph}{Channel routing.}{7}{section.6}%
+\contentsline {section}{\numberline {7}Input Formats and Validation}{7}{section.7}%
+\contentsline {section}{\numberline {8}Chip Variants and Parameter Tables}{8}{section.8}%
+\contentsline {section}{\numberline {9}Verification}{8}{section.9}%
+\contentsline {section}{\numberline {10}Security Considerations}{8}{section.10}%
+\contentsline {section}{\numberline {11}Conclusion}{9}{section.11}%
+\contentsline {section}{\numberline {A}Python Library Interface Reference}{10}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}High-Level Interface}{10}{subsection.A.1}%
+\contentsline {subsubsection}{\numberline {A.1.1}\texttt {render()} — One-Call Pipeline}{10}{subsubsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.2}Chip Management}{11}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}\texttt {get\_builtin\_chip(name)}}{11}{subsubsection.A.2.1}%
+\contentsline {subsubsection}{\numberline {A.2.2}\texttt {load\_chip\_file(path)}}{11}{subsubsection.A.2.2}%
+\contentsline {subsubsection}{\numberline {A.2.3}\texttt {ChipParams} dataclass}{11}{subsubsection.A.2.3}%
+\contentsline {subsection}{\numberline {A.3}Synthesis Pipeline}{11}{subsection.A.3}%
+\contentsline {subsubsection}{\numberline {A.3.1}\texttt {LPCSynthesizer}}{12}{subsubsection.A.3.1}%
+\contentsline {subsubsection}{\numberline {A.3.2}\texttt {BitstreamReader}}{12}{subsubsection.A.3.2}%
+\contentsline {subsubsection}{\numberline {A.3.3}\texttt {LPCFrame} and \texttt {decode\_frame()}}{12}{subsubsection.A.3.3}%
+\contentsline {subsubsection}{\numberline {A.3.4}\texttt {resample\_qdss(input\_buf, input\_rate, output\_rate)}}{12}{subsubsection.A.3.4}%
+\contentsline {subsection}{\numberline {A.4}Audio Output}{12}{subsection.A.4}%
+\contentsline {subsection}{\numberline {A.5}Input Loaders}{13}{subsection.A.5}%
+\contentsline {subsection}{\numberline {A.6}Validation Utilities}{13}{subsection.A.6}%
+\contentsline {subsection}{\numberline {A.7}Complete \texttt {\_\_all\_\_} Reference}{14}{subsection.A.7}%
+\contentsline {section}{\numberline {B}Command-Line Interface Reference}{15}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}CLI Parameters}{15}{subsection.B.1}%
+\contentsline {section}{\numberline {C}Chip Parameter File Format}{16}{appendix.C}%
+\contentsline {subsection}{\numberline {C.1}File Structure}{16}{subsection.C.1}%
+\contentsline {subsection}{\numberline {C.2}Example Excerpt}{16}{subsection.C.2}%
+\contentsline {subsection}{\numberline {C.3}Loading a Custom File}{16}{subsection.C.3}%
+\contentsline {section}{References}{17}{lstnumber.10.7}%

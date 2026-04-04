@@ -1,0 +1,357 @@
+'\" t
+.\" pyti_lpc_cmd.1 -- man page for pyti_lpc_cmd
+.\" Copyright (C) 2026 Kris Kirby, KE4AHR -- Licensed GPLv3.0
+.TH PYTI_LPC_CMD 1 "2026" "pyti_lpc_cmd 1.0.0" "User Commands"
+.
+.SH NAME
+pyti_lpc_cmd \- decode Texas Instruments TMS5xxx LPC speech bitstreams
+.
+.SH SYNOPSIS
+.B pyti_lpc_cmd
+.B mode=\fImode\fR
+[\fIparam\fR=\fIvalue\fR ...]
+.PP
+.B python \-m pyti_lpc_cmd
+.B mode=\fImode\fR
+[\fIparam\fR=\fIvalue\fR ...]
+.
+.SH DESCRIPTION
+.B pyti_lpc_cmd
+is a clean\-room Python decoder for the Texas Instruments TMS5100,
+TMS5110, TMS5200, and TMS5220 family of LPC (Linear Predictive Coding)
+speech synthesis integrated circuits \(em the same chips used in the
+.I Speak\ \&\ Spell
+educational toy (1978) and many arcade cabinets of that era.
+.PP
+The tool reads raw LPC bitstream data from a binary file, inline
+decimal CSV, inline hex CSV, a ROM image, or a plain-text data file.
+It decodes the bitstream into audio through a 10th\-order lattice
+filter vocal\-tract model and writes the result to WAV, AU, AIFF,
+or raw PCM.
+.PP
+All parameters are supplied as
+.B key=value
+pairs on the command line.
+.
+.SH MODES
+.TP
+.B mode=render
+Decode an LPC bitstream to an audio file.
+This is the primary operating mode.
+.TP
+.B mode=romlist
+Scan a VSM ROM image and emit a list of word addresses and labels to a
+text file.  Requires
+.BR rom0= .
+.TP
+.B mode=rendaddrfileseq
+Render the LPC word whose address appears on a specific line of an
+address-list file (produced by
+.BR romlist ).
+Advances a persistent line-index counter stored in
+.IR zzzline_index.txt .
+.TP
+.B mode=rendstrfileseq
+Render the hex LPC string on a specific line of a plain-text data file.
+Advances the same persistent line-index counter.
+.TP
+.B mode=cleanbrace
+Extract the content between
+.B {\ }
+on each line of a file (removes C/Arduino array syntax).
+Writes the cleaned output to
+.IR fnameout= .
+.TP
+.B mode=cleanquote
+Extract the content between
+.B "\ "
+on each line of a file (removes quoted-string syntax).
+.
+.SH RENDER PARAMETERS
+.SS Input source (exactly one required)
+.TP
+.BI strbin= path
+Read raw binary LPC data from \fIpath\fR (max 32 KB).
+.TP
+.BI str= "label:byte,byte,..."
+Inline decimal CSV.  An optional
+.I label:
+prefix is stripped.  Trailing comma is allowed and ignored.
+Example:
+.BR "str=isle:165,79,122,211" .
+.TP
+.BI strhex= "HH,HH,..."
+Inline hex CSV (e.g.\&
+.BR strhex=A5,4F,7A,D3 ).
+Trailing comma is allowed and ignored.
+.TP
+.BI strfile= path
+Read decimal CSV LPC bytes from a text file (max 1 MB).
+.TP
+.BI strhexfile= path
+Read hex CSV LPC bytes from a text file (max 1 MB).
+.TP
+.BI addr= hexaddr
+Read LPC data from a ROM image at hexadecimal address \fIhexaddr\fR.
+Requires at least
+.BR rom0= .
+.SS ROM parameters (used with addr= and romlist)
+.TP
+.BI rom0= path
+ROM binary file mapped starting at address 0x0000 (max 16 KB).
+.TP
+.BI rom1= path
+ROM binary file mapped starting at address 0x4000 (max 16 KB).
+.SS Audio output parameters
+.TP
+.BI wav= path
+Output audio file path (default:
+.IR zzzout.wav ).
+The output format is determined by the file extension:
+.BR .wav ,
+.BR .au ,
+.BR .snd ,
+.BR .aiff ,
+.BR .aif ,
+.BR .raw ,
+.BR .pcm .
+.TP
+.BI srate= Hz
+Output sample rate in Hz (default: 8000).
+Any rate from 4000 to 192000 is accepted.  Values other than 8000
+trigger a windowed-sinc (QDSS) resampler.
+.TP
+.BI swidth= bits
+Bits per sample: \fB8\fR or \fB16\fR (default: 16).
+8\-bit output uses unsigned encoding centered at 128;
+16\-bit output uses signed little\-endian encoding.
+.TP
+.BI gain= percent
+Output gain as an integer percentage, 0-300 (default: 90).
+A value of 90 applies a 0.90x scale factor before integer conversion.
+.TP
+.B output=st
+.TQ
+.B output=stereo
+Write a two-channel (stereo) audio file (default).
+.TP
+.B output=mo
+.TQ
+.B output=mono
+Write a single-channel (mono) audio file.
+.TP
+.B ch=both
+Write the decoded signal to both left and right channels (default).
+.TP
+.B ch=left
+.TQ
+.B ch=l
+.TQ
+.B ch=0
+Write the decoded signal to the left channel only; right channel is
+silent.
+.TP
+.B ch=right
+.TQ
+.B ch=r
+.TQ
+.B ch=1
+Write the decoded signal to the right channel only; left channel is
+silent.
+.SS Synthesis control
+.TP
+.BI chip= name
+Chip variant to use for decoding parameter tables (default:
+.BR tms5220 ).
+Built\-in names:
+.BR tms5100 ,
+.BR tms5110 ,
+.BR tms5200 ,
+.BR tms5220 .
+A file path to a
+.B .txt
+chip definition file is also accepted.
+.TP
+.B filt=on
+Enable the 10th-order lattice filter (default).
+.TP
+.B filt=off
+Disable the lattice filter; all output samples are zero.
+Useful for measuring excitation alone.
+.TP
+.B loopguard=on
+Enable the infinite\-loop guard (default).
+After 200 consecutive silence frames (~5 seconds of silence), synthesis
+halts regardless of remaining bitstream data.  This prevents runaway
+decoding of corrupt or padded inputs.
+.TP
+.B loopguard=off
+Disable the infinite\-loop guard.  Synthesis continues until a stop
+frame (energy index 0xF) is encountered or the bitstream is exhausted.
+.TP
+.B verb=on
+Print per\-frame diagnostic information to stdout showing frame number,
+energy, pitch period, repeat flag, silence/stop state, and interpolation
+skip flag.
+.TP
+.B verb=off
+Suppress per\-frame diagnostics (default).
+.SS Sequential/file mode parameters
+.TP
+.BI fnamein= path
+Input file for
+.B rendaddrfileseq
+and
+.BR rendstrfileseq .
+.TP
+.BI fnameout= path
+Output file for
+.BR romlist ,
+.BR cleanbrace ,
+and
+.BR cleanquote .
+Default: depends on mode.
+.TP
+.BI line= n
+Explicit zero-based line index for sequential modes.
+If absent, the index is read from
+.IR zzzline_index.txt .
+.TP
+.BI step= n
+Number of lines to advance the persistent index after each render
+(default: 1).
+.
+.SH EXIT STATUS
+.TP
+.B 0
+Success.
+.TP
+.B 1
+Error (invalid parameter, file not found, validation failure, or unknown mode).
+.
+.SH EXAMPLES
+.SS Render a binary LPC file to a stereo WAV
+.nf
+pyti_lpc_cmd mode=render chip=tms5220 \\
+    strbin=word.lpc wav=out.wav
+.fi
+.SS Render to mono 44.1 kHz 16-bit WAV
+.nf
+pyti_lpc_cmd mode=render chip=tms5220 \\
+    strbin=word.lpc wav=out.wav srate=44100 output=mono
+.fi
+.SS Render from inline hex bytes (tms5220 reference vector)
+.nf
+pyti_lpc_cmd mode=render chip=tms5220 \\
+    strhex=A5,4F,7A,D3,3C,5A,8F,AE wav=snippet.wav
+.fi
+.SS Render from inline decimal CSV with label prefix
+.nf
+pyti_lpc_cmd mode=render chip=tms5100 \\
+    str=Affirmative:165,79,122,211,60,90 wav=affirm.wav
+.fi
+.SS Render a word from a Speak & Spell ROM image
+.nf
+pyti_lpc_cmd mode=render chip=tms5220 \\
+    rom0=speakspell_r0.bin rom1=speakspell_r1.bin \\
+    addr=0220 wav=affirmative.wav
+.fi
+.SS List all words in a ROM
+.nf
+pyti_lpc_cmd mode=romlist \\
+    rom0=speakspell_r0.bin rom1=speakspell_r1.bin \\
+    fnameout=word_list.txt
+.fi
+.SS Step through ROM words one at a time (retains position between calls)
+.nf
+pyti_lpc_cmd mode=rendaddrfileseq \\
+    rom0=speakspell_r0.bin fnamein=word_list.txt wav=current.wav
+.fi
+.SS Render 8-bit output to the left channel only with verbose logging
+.nf
+pyti_lpc_cmd mode=render chip=tms5220 \\
+    strbin=word.lpc wav=left.wav output=stereo ch=left \\
+    swidth=8 verb=on
+.fi
+.SS Render with a custom chip definition file
+.nf
+pyti_lpc_cmd mode=render chip=/data/mychip.txt \\
+    strbin=word.lpc wav=out.wav
+.fi
+.SS Disable the infinite-loop guard for a specially crafted stream
+.nf
+pyti_lpc_cmd mode=render chip=tms5220 \\
+    strbin=long_stream.lpc wav=out.wav loopguard=off
+.fi
+.SS Clean up a C Arduino-style LPC array
+.nf
+pyti_lpc_cmd mode=cleanbrace \\
+    fnamein=talkie_data.cpp fnameout=clean.txt
+.fi
+.
+.SH FILES
+.TP
+.I zzzout.wav
+Default output audio file (in the current working directory).
+.TP
+.I zzzline_index.txt
+Persistent line-index counter for
+.B rendaddrfileseq
+and
+.B rendstrfileseq
+modes.
+.TP
+.I zzzaddr_list.txt
+Default output file for
+.B romlist
+mode.
+.TP
+.I zzzclean.txt
+Default output file for
+.B cleanbrace
+and
+.B cleanquote
+modes.
+.
+.SH NOTES
+.SS Bit reversal
+Each byte of the LPC bitstream is bit-reversed (LSB <-> MSB) before
+extraction.  This matches the original TI hardware which shifts bits
+LSB-first off the ROM.  The three-stage reversal (nibble swap, pair
+swap, bit swap) is applied to every byte individually.
+.SS Reference test vector
+The first 16 bytes of a TMS5220 "Affirmative" utterance are:
+.nf
+A5 4F 7A D3 3C 5A 8F AE C8 A9 70 ED BD BA 2A 3B
+.fi
+A full 223-byte file renders to 35 frames (33 data + 2 drain),
+producing 7000 samples.  The stereo 16-bit 8 kHz WAV is exactly
+28044 bytes; mono 16-bit is 14044 bytes; mono 8-bit is 7044 bytes.
+.SS Chip variants
+.TS
+tab(	) allbox;
+l l l l .
+Chip	Pitch bits	Chirp len	Notes
+tms5100	5	50	Speak & Spell first edition
+tms5110	5	32	Later Speak & Spell variants
+tms5200	6	52	Hex chirp table
+tms5220	6	52	Most common; default
+.TE
+.
+.SH SEE ALSO
+.BR python3 (1),
+.BR sox (1),
+.BR ffmpeg (1)
+.PP
+Project source and documentation:
+.I https://github.com/ke4ahr/PyTI_LPC_CMD
+.
+.SH AUTHOR
+Kris Kirby, KE4AHR
+.
+.SH COPYRIGHT
+Copyright \(co 2026 Kris Kirby, KE4AHR.
+Licensed under the GNU General Public License v3.0 or later.
+See
+.I https://www.gnu.org/licenses/gpl\-3.0.html
+for the full license text.
